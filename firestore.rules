@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Browser clients may read active catalog data only.
+    match /products/{productId} {
+      allow read: if resource.data.active == true;
+      allow write: if false;
+    }
+    // All writes and privileged reads are handled by verified server routes.
+    match /users/{userId} {
+      allow read, write: if false;
+    }
+    match /orders/{orderId} {
+      allow read, write: if false;
+    }
+    match /payments/{paymentId} {
+      allow read, write: if false;
+    }
+    match /coupons/{couponId} {
+      allow read, write: if false;
+    }
+    match /wishlists/{itemId} {
+      allow read, write: if false;
+    }
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
